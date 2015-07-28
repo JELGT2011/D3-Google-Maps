@@ -11,8 +11,8 @@ html, body, #map {
     height: 90%;
 }
 
-.stations, .stations svg {
-    position: absolute;
+.google-maps-overlay, .google-maps-overlay svg {
+    /*position: relative;*/
 }
 
 
