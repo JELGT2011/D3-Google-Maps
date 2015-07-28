@@ -6,6 +6,11 @@ html, body, #map {
     padding: 0;
 }
 
+#map {
+    width: 90%;
+    height: 90%;
+}
+
 .stations, .stations svg {
     position: absolute;
 }

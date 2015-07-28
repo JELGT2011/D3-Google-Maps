@@ -24,7 +24,7 @@ $(document).ready(function () {
 	};
 
 	// Create the Google Map…
-	var map = new google.maps.Map(d3.select("#map").node(), map_options);
+	map = new google.maps.Map(d3.select("#map").node(), map_options);
 
 	map.mapTypes.set('map_style', styled_map);
 	map.setMapTypeId('map_style');
