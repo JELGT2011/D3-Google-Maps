@@ -84,7 +84,7 @@ $(document).ready(function () {
 
 			} // for (var i = 0; i < data.length; i++) { ... }
 
-			var overlay = new ArcGraphOverlay(graph, map);
+			var overlay = new SVGArcsOverlay(graph, map);
 
 		}); // d3.csv('data/carlisle_transport.csv', function() { ... })
 
