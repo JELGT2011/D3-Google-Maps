@@ -1,5 +1,11 @@
-SVGArcsOverlay.prototype = new google.maps.OverlayView();
 
+/**
+ * Instantiate the overlay
+ *
+ * @constructor
+ * @param graph
+ * @param map
+ */
 function SVGArcsOverlay(graph, map) {
 
 	this.graph_ = graph;
@@ -11,19 +17,31 @@ function SVGArcsOverlay(graph, map) {
 	this.setMap(map);
 } // function SVGArcsOverlay(graph, map) { ... }
 
+// inherit prototype from Google's default overlay
+SVGArcsOverlay.prototype = new google.maps.OverlayView();
+
+/**
+ * Called internally by the map when this overlay is added.
+ */
 SVGArcsOverlay.prototype.onAdd = function () {
 
-	var container, svg, nodes, node, node_group, marker, label, edge_group, edges, edge;
+	var container, svg, projection, south_west, north_east, nodes, node, node_group, marker, label, edge_group, edges, edge;
 
+	projection = this.getProjection();
+
+	south_west = projection.fromLatLngToDivPixel(this.map_.getBounds().getSouthWest());
+	north_east = projection.fromLatLngToDivPixel(this.map_.getBounds().getNorthEast());
+
+	// select container.  These properties are required.
 	container = d3.select(this.getPanes().overlayLayer).append('div')
 			.style('position', 'absolute')
-			.attr('width', '100%')
-			.attr('height', '2000px');
+			.attr('width', north_east.x - south_west.x)
+			.attr('height', south_west.y - north_east.y);
 
 	svg = container.append('svg')
 			.style('position', 'absolute')
-			.attr('width', '2000px')
-			.attr('height', '2000px');
+			.attr('width', north_east.x - south_west.x)
+			.attr('height', south_west.y - north_east.y);
 
 	this.container_ = container.node();
 	this.svg_ = svg.node();
@@ -63,13 +81,19 @@ SVGArcsOverlay.prototype.onAdd = function () {
 					.attr('state-lat', edges[j].value.state.coordinates[0])
 					.attr('state-lng', edges[j].value.state.coordinates[1])
 					.attr('zip-lat', edges[j].value.zip.coordinates[0])
-					.attr('zip-lng', edges[j].value.zip.coordinates[1]);
+					.attr('zip-lng', edges[j].value.zip.coordinates[1])
+					.style('stroke-width', edges[j].value.shipments);
 
 		} // for (var j = 0; j < edges.length; j++) { ... }
 	} // for (var i = 0; i < this.graph_.length; i++) { ... }
 }; // SVGArcsOverlay.prototype.onAdd = function() { ... }
 
+/**
+ * Called internally by the map it has changed the view port.
+ */
 SVGArcsOverlay.prototype.draw = function () {
+
+	// TODO: only process visibile elements.
 
 	var container, svg, projection, south_west, north_east;
 
@@ -133,6 +157,9 @@ SVGArcsOverlay.prototype.draw = function () {
 	this.svg_ = svg.node();
 }; // SVGArcsOverlay.prototype.draw = function() { ... }
 
+/**
+ * Called internally by the map when it is destroyed or removes this overlay.
+ */
 SVGArcsOverlay.prototype.onRemove = function() {
 
 	this.container_.parentNode.removeChild(this.container_);

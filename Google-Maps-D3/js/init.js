@@ -55,9 +55,11 @@ $(document).ready(function () {
 						}
 					};
 
+					// TODO: Move this code into SVGArcsOverlay.js
 					graph_style.innerHTML +=
 							'._' + data[i].PLANT + ' { ' +
-							' stroke: #' + (Math.random()*0xFFFFFF<<0).toString(16) + '; ' +
+							' stroke: ' + randomColor() + '; ' +
+							' opacity: 0.85; ' +
 							'}\n';
 				}
 
