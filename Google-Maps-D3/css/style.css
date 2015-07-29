@@ -12,7 +12,7 @@ html, body, #map {
 }
 
 .google-maps-overlay, .google-maps-overlay svg {
-    /*position: relative;*/
+    position: absolute;
 }
 
 

@@ -33,6 +33,11 @@ $(document).ready(function () {
 
 	var graph = {};
 
+	var graph_style = document.createElement('style');
+	graph_style.type = 'text/css';
+	graph_style.innerHTML = '';
+	document.getElementsByTagName('head')[0].appendChild(graph_style);
+
 	google.maps.event.addListenerOnce(map, 'idle', function () {
 
 		d3.csv('data/carlisle_transport.csv', function (data) {
@@ -49,6 +54,11 @@ $(document).ready(function () {
 							]
 						}
 					};
+
+					graph_style.innerHTML +=
+							'._' + data[i].PLANT + ' { ' +
+							' stroke: #' + (Math.random()*0xFFFFFF<<0).toString(16) + '; ' +
+							'}\n';
 				}
 
 				graph[data[i].PLANT][data[i].DESTINATION] = {
@@ -78,6 +88,6 @@ $(document).ready(function () {
 
 		}); // d3.csv('data/carlisle_transport.csv', function() { ... })
 
-	}); // google.maps.event.addListenerOnce(map, 'idle', function() { ... })
+	}); // google.maps.event.addListenerOnce(map_, 'idle', function() { ... })
 
 }); // $(document).ready(function() { ... })
