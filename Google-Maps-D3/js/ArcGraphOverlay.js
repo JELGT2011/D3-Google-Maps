@@ -8,7 +8,7 @@ function ArcGraphOverlay(graph, map) {
 	this.setMap(map);
 
 	this.layer_ = null;
-	this.origins = null;
+	this.svg_ = null;
 
 } // function ArcGraphOverlay(graph_) { ... }
 
@@ -19,16 +19,16 @@ ArcGraphOverlay.prototype.onAdd = function () {
 	layer
 			.attr("class", "google-maps-overlay");
 
-	var origins = layer.append('svg');
+	var svg = layer.append('svg');
 
-	origins
-			.attr('id', 'origins')
+	svg
+			.attr('id', 'svg')
 			.style('position', 'absolute')
 			.attr('width', '100%')
 			.attr('height', $('#map').height());
 
 	this.layer_ = layer;
-	this.origins = origins;
+	this.svg_ = svg;
 
 	for (var i = 0; i < d3.entries(this.graph_).length; i++) {
 		construct_from_node(this, d3.entries(this.graph_)[i]);
@@ -44,13 +44,13 @@ ArcGraphOverlay.prototype.draw = function () {
 		this.last_zoom_ = this.map_.zoom;
 
 		var layer = this.layer_;
-		var origins = $('#origins');
+		var svg = $('#svg');
 
 		var projection = this.getProjection();
 
-		for (var i = 0; i < origins.children().length; i++) {
+		for (var i = 0; i < svg.children().length; i++) {
 
-			var origin = origins.children()[i];
+			var origin = svg.children()[i];
 
 			var marker = d3.select(origin.getElementsByTagName('circle').item(0));
 
@@ -92,7 +92,7 @@ ArcGraphOverlay.prototype.draw = function () {
 		}
 
 		this.layer_ = layer;
-		this.origins = origins;
+		this.svg_ = svg;
 
 	}
 
@@ -105,9 +105,9 @@ ArcGraphOverlay.prototype.onRemove = function () {
 function construct_from_node(overlay, node) {
 
 	var layer = overlay.layer_;
-	var origins = overlay.origins;
+	var svg = overlay.svg_;
 
-	var origin = overlay.origins.append('g');
+	var origin = overlay.svg_.append('g');
 
 	origin.append('circle')
 			.attr('class', '_' + node.key + ' ' + 'marker')
@@ -145,7 +145,7 @@ function construct_from_node(overlay, node) {
 	}
 
 	overlay.layer_ = layer;
-	overlay.origins = origins;
+	overlay.svg_ = svg;
 
 }
 
