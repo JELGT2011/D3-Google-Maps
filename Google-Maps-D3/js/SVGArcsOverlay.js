@@ -4,8 +4,6 @@ function SVGArcsOverlay(graph, map) {
 
 	this.graph_ = graph;
 	this.map_ = map;
-	this.center_ = new google.maps.LatLng(0, 0);
-	this.last_zoom_ = 0;
 
 	this.container_ = null;
 	this.svg_ = null;
@@ -73,90 +71,70 @@ SVGArcsOverlay.prototype.onAdd = function () {
 
 SVGArcsOverlay.prototype.draw = function () {
 
-	if (this.last_zoom_ !== this.map.zoom) {
+	var container, svg, projection, south_west, north_east;
 
-		this.last_zoom_ = this.map.zoom;
+	container = d3.select(this.container_);
+	svg = d3.select(this.svg_);
+	projection = this.getProjection();
 
-		var container, svg, projection;
+	south_west = projection.fromLatLngToDivPixel(this.map_.getBounds().getSouthWest());
+	north_east = projection.fromLatLngToDivPixel(this.map_.getBounds().getNorthEast());
 
-		container = this.container_;
-		svg = this.svg_;
+	container
+			.style('left', south_west.x + 'px')
+			.style('top', north_east.y + 'px')
+			.style('width', (north_east.x - south_west.x) + 'px')
+			.style('height', (south_west.y - north_east.y) + 'px');
 
-		projection = this.getProjection();
+	var nodes, current_node_position, next_node_position, node_group, marker, label, edge_group, edges, edge, edge_position;
 
-		// update SVG overlay to be positioned correctly
-		//var style, center, width, offset, left, top, factor;
-		//
-		//style = this.container_.style;
-		//
-		//center = projection.fromLatLngToDivPixel(this.center_);
-		//width = Math.round(projection.getWorldWidth());
-		//offset = width / 2;
-		//
-		//left = Math.round(center.x) - offset;
-		//top = Math.round(center.y) - offset;
-		//
-		//// compute offset for small zoom levels
-		////factor = Math.max(1024 / width, 1) - 1;
-		//factor = 1;
-		//
-		//// scale svg to world bounds
-		//this.svg_.setAttribute('width', width);
-		//this.svg_.setAttribute('height', width);
-		//
-		//// apply offset
-		//style.left = left + 'px';
-		//style.top = top + 'px';
-		//style.marginLeft = (-factor * offset) + 'px';
+	nodes = svg.node().childNodes;
 
+	for (var i = 0; i < nodes.length; i++) {
 
-		// update node and edge positions
-		var nodes, node_position, node_group, marker, label, edge_group, edges, edge, edge_position;
+		node_group = d3.select(nodes[i]);
+		marker = node_group.select('circle');
+		label = node_group.select('text');
+		edge_group = node_group.select('g');
+		edges = edge_group.node().childNodes;
 
-		nodes = svg.childNodes;
+		next_node_position = projection.fromLatLngToDivPixel(new google.maps.LatLng(
+				marker.attr('lat'),
+				marker.attr('lng')
+		));
 
-		for (var i = 0; i < nodes.length; i++) {
+		marker
+				.attr('cx', next_node_position.x - south_west.x)
+				.attr('cy', next_node_position.y - north_east.y);
 
-			node_group = d3.select(nodes[i]);
-			marker = node_group.select('circle');
-			label = node_group.select('text');
-			edge_group = node_group.select('g');
-			edges = edge_group.node().childNodes;
+		label
+				.attr('x', next_node_position.x - south_west.x)
+				.attr('y', next_node_position.y - north_east.y);
 
-			node_position = projection.fromLatLngToDivPixel(new google.maps.LatLng(
-					marker.attr('lat'),
-					marker.attr('lng')
+		for (var j = 0; j < edges.length; j++) {
+
+			edge = d3.select(edges[j]);
+
+			edge_position = projection.fromLatLngToDivPixel(new google.maps.LatLng(
+					edge.attr('state-lat'),
+					edge.attr('state-lng')
 			));
 
-			marker
-					.attr('cx', node_position.x)
-					.attr('cy', node_position.y);
+			edge
+					.attr('x1', next_node_position.x - south_west.x)
+					.attr('x2', edge_position.x - south_west.x)
+					.attr('y1', next_node_position.y - north_east.y)
+					.attr('y2', edge_position.y - north_east.y);
 
-			label
-					.attr('x', node_position.x)
-					.attr('y', node_position.y);
+		} // for (var j = 0; j < edges.length; j++) { ... }
+	} // for (var i = 0; i < nodes.length; i++) { ... }
 
-			for (var j = 0; j < edges.length; j++) {
-
-				edge = d3.select(edges[j]);
-
-				edge_position = projection.fromLatLngToDivPixel(new google.maps.LatLng(
-						edge.attr('state-lat'),
-						edge.attr('state-lng')
-				));
-
-				edge
-						.attr('x1', node_position.x)
-						.attr('x2', edge_position.x)
-						.attr('y1', node_position.y)
-						.attr('y2', edge_position.y);
-
-			} // for (var j = 0; j < edges.length; j++) { ... }
-		} // for (var i = 0; i < nodes.length; i++) { ... }
-
-		this.container_ = container;
-		this.svg_ = svg;
-
-	} // if (this.last_zoom_ !== this.map.zoom) { ... }
+	this.container_ = container.node();
+	this.svg_ = svg.node();
 }; // SVGArcsOverlay.prototype.draw = function() { ... }
 
+SVGArcsOverlay.prototype.onRemove = function() {
+
+	this.container_.parentNode.removeChild(this.container_);
+	this.container_ = null;
+}; // SVGArcsOverlay.prototype.onRemove = function() { ... }
