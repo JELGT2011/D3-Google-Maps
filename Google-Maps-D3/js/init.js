@@ -33,11 +33,6 @@ $(document).ready(function () {
 
 	var graph = {};
 
-	var graph_style = document.createElement('style');
-	graph_style.type = 'text/css';
-	graph_style.innerHTML = '';
-	document.getElementsByTagName('head')[0].appendChild(graph_style);
-
 	google.maps.event.addListenerOnce(map, 'idle', function () {
 
 		d3.csv('data/carlisle_transport.csv', function (data) {
@@ -54,13 +49,6 @@ $(document).ready(function () {
 							]
 						}
 					};
-
-					// TODO: Move this code into SVGArcsOverlay.js
-					graph_style.innerHTML +=
-							'._' + data[i].PLANT + ' { ' +
-							' stroke: ' + randomColor() + '; ' +
-							' opacity: 0.85; ' +
-							'}\n';
 				}
 
 				graph[data[i].PLANT][data[i].DESTINATION] = {

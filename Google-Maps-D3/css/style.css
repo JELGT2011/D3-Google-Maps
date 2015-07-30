@@ -5,25 +5,3 @@ html, body, #map {
     margin: 0;
     padding: 0;
 }
-
-#map {
-    width: 90%;
-    height: 90%;
-}
-
-.google-maps-overlay, .google-maps-overlay svg {
-    position: absolute;
-}
-
-/*.stations svg {*/
-    /*width: 60px;*/
-    /*height: 20px;*/
-    /*padding-right: 100px;*/
-    /*font: 14px sans-serif;*/
-/*}*/
-
-/*.stations circle {*/
-    /*fill: brown;*/
-    /*stroke: black;*/
-    /*stroke-width: 1.5px;*/
-/*}*/
