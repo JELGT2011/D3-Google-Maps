@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Using RequireJS Within Design Studio</title>
+
+	<link rel="stylesheet" href="css/bootstrap.css"/>
+	<link rel="stylesheet" href="css/bootstrap-theme.css"/>
+	<link rel="stylesheet" href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css"/>
+
+</head>
+<body class="container-fluid">
+
+<div class="jumbotron">
+	<h2>Using RequireJS Within Design Studio</h2>
+
+	<div class="container-fluid">
+		<h3>
+			Step 1:
+		</h3>
+		<h4>
+			In the dft-dynamic-component's init script, change the requirejs config paths
+		</h4>
+
+		<pre class="prettyprint linenums">
+requirejs.config({
+	"paths": {
+		"jquery": "//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min",
+		"async": "//cdnjs.cloudflare.com/ajax/libs/requirejs-async/0.1.1/async"
+		}
+	}
+);
+		</pre>
+
+		<p>
+			You don't have to follow this exact config, it's just an example. Note that you really should use this jquery path
+			though.
+		</p>
+	</div>
+	<br/>
+
+	<div class="container-fluid">
+		<h3>
+			Step 2:
+		</h3>
+		<h4>
+			define your own modules
+		</h4>
+
+		<pre class="prettyprint linenums">
+define(
+	'info_box',
+	[
+		'google_map',
+		'async!http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js'
+	],
+	function() {
+		console.log('info_box module configured');
+		debugger;
+	}
+);
+
+// this is a named module 'init' that returns the init function.
+define('init', ['jquery', 'google_map'], function () {
+  return function () { ... }
+});
+		</pre>
+
+		<p>
+			Again, this will change with what you are trying to accomplish. These are going to be standard RequireJS define
+			blocks.
+		</p>
+
+	</div>
+	<br/>
+
+	<div class="container-fluid">
+		<h3>
+			Step 3:
+		</h3>
+		<h4>
+			In the draw script, require your 'init' module.
+		</h4>
+
+				<pre class="prettyprint linenums">
+require(['init'], function (init) {
+  if (!self.map) {
+    init();
+  }
+
+  $.each(self.map.markers, function(key, marker) {
+    if (marker.visible === true) {
+      marker.info_window.setContent(self.content_list_data(
+          marker.title,
+          options.data.filter(function(data) {
+            return datasource_key(data) === marker.title;
+          })[0]
+      ));
+    }
+  });
+
+});
+		</pre>
+
+		<p>
+			Alternatively, if we just check if 'init' has been defined, we can guarantee that init has been called at least
+			once before we invoke draw.
+		</p>
+	</div>
+	<br/>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+
+</body>
+</html>
