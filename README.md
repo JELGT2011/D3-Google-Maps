@@ -8,4 +8,4 @@ The D3 overlay is added to the map using the overlay component of the Google Map
 is abstracted out into the SVGArcsOverlay.js file.  All of the data being used for the overlay is in the data folder,
 loaded in using D3's ability to natively import CSV, JSON, and GEOJSON files.  Screen Shot below.
 
-![Screen Shot](https://github.com/JELGT2011/D3-Google-Maps/img/ScreenShot.png)
+![Screen Shot](https://github.com/JELGT2011/D3-Google-Maps/blob/master/img/ScreenShot.png)
