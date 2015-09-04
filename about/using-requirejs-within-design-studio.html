@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Using RequireJS Within Design Studio</title>
+  <meta charset="UTF-8">
+  <title>Using RequireJS Within Design Studio</title>
 
-	<link rel="stylesheet" href="css/bootstrap.css"/>
-	<link rel="stylesheet" href="css/bootstrap-theme.css"/>
-	<link rel="stylesheet" href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css"/>
+  <link rel="stylesheet" href="css/bootstrap.css"/>
+  <link rel="stylesheet" href="css/bootstrap-theme.css"/>
+  <link rel="stylesheet" href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css"/>
 
 </head>
 <body class="container-fluid">
 
 <div class="jumbotron">
-	<h2>Using RequireJS Within Design Studio</h2>
+  <h2>Using RequireJS Within Design Studio</h2>
 
-	<div class="container-fluid">
-		<h3>
-			Step 1:
-		</h3>
-		<h4>
-			In the dft-dynamic-component's init script, change the requirejs config paths
-		</h4>
+  <div class="container-fluid">
+    <h3>
+      Step 1:
+    </h3>
+    <h4>
+      In the dft-dynamic-component's init script, change the requirejs config paths
+    </h4>
 
 		<pre class="prettyprint linenums">
 requirejs.config({
@@ -31,20 +31,20 @@ requirejs.config({
 });
 		</pre>
 
-		<p>
-			You don't have to follow this exact config, it's just an example. Note that you really should use this jquery path
-			though.
-		</p>
-	</div>
-	<br/>
+    <p>
+      You don't have to follow this exact config, it's just an example. Note that you really should use this jquery path
+      though.
+    </p>
+  </div>
+  <br/>
 
-	<div class="container-fluid">
-		<h3>
-			Step 2:
-		</h3>
-		<h4>
-			define your own modules
-		</h4>
+  <div class="container-fluid">
+    <h3>
+      Step 2:
+    </h3>
+    <h4>
+      define your own modules
+    </h4>
 
 		<pre class="prettyprint linenums">
 define(
@@ -65,21 +65,21 @@ define('init', ['jquery', 'google_map'], function () {
 });
 		</pre>
 
-		<p>
-			Again, this will change with what you are trying to accomplish. These are going to be standard RequireJS define
-			blocks.
-		</p>
+    <p>
+      Again, this will change with what you are trying to accomplish. These are going to be standard RequireJS define
+      blocks.
+    </p>
 
-	</div>
-	<br/>
+  </div>
+  <br/>
 
-	<div class="container-fluid">
-		<h3>
-			Step 3:
-		</h3>
-		<h4>
-			In the draw script, require your 'init' module.
-		</h4>
+  <div class="container-fluid">
+    <h3>
+      Step 3:
+    </h3>
+    <h4>
+      In the draw script, require your 'init' module.
+    </h4>
 
 		<pre class="prettyprint linenums">
 require(['init'], function (init) {
@@ -101,12 +101,12 @@ require(['init'], function (init) {
 });
 		</pre>
 
-		<p>
-			Alternatively, if we just check if 'init' has been defined, we can guarantee that init has been called at least
-			once before we invoke draw.
-		</p>
-	</div>
-	<br/>
+    <p>
+      Alternatively, if we just check if 'init' has been defined, we can guarantee that init has been called at least
+      once before we invoke draw.
+    </p>
+  </div>
+  <br/>
 
 </div>
 
