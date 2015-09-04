@@ -10,4 +10,6 @@ loaded in using D3's ability to natively import CSV, JSON, and GEOJSON files.
 
 Screen Shot below.
 
+Live demo [here](http://projects.jasonlibbey.com.s3-website-us-east-1.amazonaws.com/D3-Google-Maps/Google-Maps-D3/)
+
 ![Screen Shot](https://github.com/JELGT2011/D3-Google-Maps/blob/master/img/ScreenShot.png)
