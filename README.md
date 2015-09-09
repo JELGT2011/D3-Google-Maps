@@ -12,4 +12,6 @@ Screen Shot below.
 
 Live demo [here](http://projects.jasonlibbey.com.s3-website-us-east-1.amazonaws.com/D3-Google-Maps/Google-Maps-D3/)
 
-![Screen Shot](https://github.com/JELGT2011/D3-Google-Maps/blob/master/img/ScreenShot.png)
+![Screen Shot 01](https://github.com/JELGT2011/D3-Google-Maps/blob/master/img/ScreenShot02.png)
+
+![Screen Shot 02](https://github.com/JELGT2011/D3-Google-Maps/blob/master/img/ScreenShot01.png)
